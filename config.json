@@ -1,0 +1,8 @@
+{
+  "api_id": 26125103,
+  "api_hash": "455c4376361aab5f18537d832e8b0749",
+  "session_name": "smena_checker",
+  "trigger_word": "смена",
+  "reply_text": "Привет! Это автоответ.",
+  "target_chats": ["Музыка для контеста", "@ktosheio"]
+}
