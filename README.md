@@ -7,150 +7,149 @@
 ## 🇬🇧 English
 
 ### Overview
-**Chat Checker** is a lightweight Telegram **userbot** built with Python and Telethon. It listens for a specific **keyword** in selected chats and automatically posts a **predefined reply** right in the same chat.
+**Chat Checker** is a lightweight Telegram **userbot** built with Python and Telethon. It monitors selected chats for a specific **keyword** and automatically posts a **predefined reply** in the same chat.
 
-Use it for quick alerts, reminders, and workflow automations triggered by a word or phrase.
+Use it for quick alerts, reminders, and automation triggered by a word or phrase.
+
+---
 
 ### Features
-- Monitors messages in selected chats (private, groups, channels you can read).
-- Case-insensitive keyword matching.
-- Instant auto-reply with your predefined text.
-- Simple JSON-based configuration.
+- Monitors messages in private chats, groups, or channels.
+- Case-insensitive keyword search.
+- Instant auto-reply with your custom message.
+- Easy setup via a JSON config file.
+
+---
 
 ### How It Works
-1. You configure the bot in `config.json`.
-2. The script connects to Telegram via the [Telethon](https://github.com/LonamiWebs/Telethon) MTProto client.
-3. When the keyword appears in one of the target chats, the bot replies to that message with your text (`event.reply(...)`).
+1. You create `config.json` with your Telegram API credentials and settings.
+2. The bot connects to Telegram via the [Telethon](https://github.com/LonamiWebs/Telethon) MTProto client.
+3. When the keyword appears in a target chat, the bot replies automatically.
 
-> 💡 Want to DM a specific user instead of replying in the chat? See the snippet in **Advanced** below.
-
-### Project Structure
-```
-Chat_checker/
-├─ bot.py           # main script
-├─ config.json      # configuration (do NOT commit secrets)
-└─ smena_checker.session  # Telethon session (should be ignored by git)
-```
+---
 
 ### Requirements
-- Python 3.9+ (recommended 3.10/3.11)
-- A Telegram account + API credentials from https://my.telegram.org/apps
-- A virtual environment (recommended)
+- Python **3.9+** (recommended 3.10/3.11)
+- A Telegram account
+- API ID & API Hash from [my.telegram.org](https://my.telegram.org/apps)
+- [Telethon](https://github.com/LonamiWebs/Telethon) library
+
+---
 
 ### Installation
 ```bash
-# 1) Clone your repo and enter it
-git clone <your-repo-url>.git
-cd <your-repo-folder>
+# 1) Clone your repo and go into it
+git clone https://github.com/<your-username>/<your-repo>.git
+cd <your-repo>
 
-# 2) Create and activate virtualenv (Windows PowerShell example)
+# 2) Create and activate a virtual environment
 python -m venv venv
 venv\Scripts\activate
-
 # macOS/Linux:
-# python3 -m venv venv
-# source venv/bin/activate
+# python3 -m venv venv && source venv/bin/activate
 
 # 3) Install dependencies
 pip install telethon
 ```
 
+---
+
 ### Configuration
-Create `config.json` in the project folder:
+Create a file `config.json` in the project folder and insert your own credentials:
 
 ```jsonc
 {
   "api_id": 1234567,
-  "api_hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "api_hash": "xxxxxxxxxxxxxxxxxxxxxxxx",
   "session_name": "smena_checker",
   "trigger_word": "смена",
-  "reply_text": "Привет! Это автоответ.",
-  "target_chats": ["@your_chat", "Some Chat Name"]
+  "reply_text": "Hello! This is an auto-reply.",
+  "target_chats": ["@your_chat", "Chat Name"]
 }
 ```
 
-- `api_id`, `api_hash`: your Telegram API credentials (keep them secret).
-- `session_name`: name for your Telethon session file.
-- `trigger_word`: a word/phrase to trigger the reply (matching is case-insensitive).
-- `reply_text`: the message to send as a reply.
-- `target_chats`: list of chats to monitor; can be `@username`, chat titles, or IDs.
+---
 
-### Run
+### Where to get `api_id` and `api_hash`
+1. Go to [https://my.telegram.org](https://my.telegram.org).
+2. Log in with your phone number.
+3. Go to **API development tools**.
+4. Create a new application.
+5. Copy `api_id` and `api_hash` into `config.json`.
+
+---
+
+### Run the bot
 ```bash
 python bot.py
 ```
-The first launch will ask you to log in (code to your Telegram). After that, the session is stored and reused.
+- On the first run, the bot will ask for your Telegram phone number and a login code.
+- After login, it will create a `.session` file to reuse your authorization.
+
+---
 
 ### Advanced
-**Send a DM to a specific user instead of replying in the chat:** replace the reply block in `bot.py` with:
+Send a direct message instead of replying in chat:
 ```python
 await client.send_message(config["to_user_id"], config["reply_text"])
 ```
-and add `to_user_id` (or username) to `config.json`:
+Add to `config.json`:
 ```json
 "to_user_id": 123456789
 ```
 
+---
+
 ### Security Notes
-- **Never commit** `config.json`, session files (`*.session`), or your virtualenv to Git.
-- Add a `.gitignore` similar to:
+- **Do not commit** your real `config.json` or `.session` file to public repositories.
+- Treat your `api_id` and `api_hash` like passwords.
+- Use `.gitignore`:
 ```
 venv/
 *.session*
-config.json
 __pycache__/
 *.pyc
 ```
-- Treat your `api_id`/`api_hash` like passwords.
-
-### Troubleshooting
-- **Keyword not triggering?** Check spelling, case-insensitive matching, and that the target chat is listed correctly.
-- **No access to a chat?** The user account running the userbot must be a member and able to read messages.
-- **Auth issues?** Delete the `*.session` file and re-login; ensure correct phone and code.
-
-### License
-MIT (or your choice).
 
 ---
 
 ## 🇷🇺 Русская версия
 
 ### Описание
-**Chat Checker** — лёгкий **юзербот** для Telegram на Python и Telethon. Он слушает выбранные чаты, ловит **ключевое слово** и автоматически отправляет **заранее заданный ответ** прямо в том же чате.
+**Chat Checker** — это лёгкий **юзербот** для Telegram на Python и Telethon. Он отслеживает выбранные чаты, ищет **ключевое слово** и автоматически отправляет **заранее заданный ответ** в тот же чат.
 
-Подходит для напоминаний, оповещений и автоматизаций, запускаемых по слову/фразе.
+Подходит для напоминаний, сигналов и автоматизации по триггеру.
+
+---
 
 ### Возможности
-- Мониторинг сообщений в выбранных чатах (лички, группы, каналы с доступом на чтение).
-- Поиск ключа без учёта регистра.
-- Мгновенный автоответ заданным текстом.
-- Простой JSON-конфиг.
+- Работает в личных чатах, группах и каналах.
+- Ищет слово без учёта регистра.
+- Отвечает мгновенно заранее заданным текстом.
+- Простая настройка через `config.json`.
+
+---
 
 ### Как это работает
-1. Настраиваете `config.json`.
+1. Создаёте `config.json` с вашими API-данными Telegram и настройками.
 2. Скрипт подключается к Telegram через [Telethon](https://github.com/LonamiWebs/Telethon).
-3. При появлении ключевого слова в одном из отслеживаемых чатов бот отвечает на сообщение (`event.reply(...)`).
+3. При появлении ключевого слова бот отвечает автоматически.
 
-> 💡 Хотите отправлять ЛС конкретному пользователю вместо ответа в чат? Смотрите сниппет в разделе **Advanced** выше.
-
-### Структура проекта
-```
-Chat_checker/
-├─ bot.py                 # основной скрипт
-├─ config.json            # конфигурация (не коммитьте секреты)
-└─ smena_checker.session  # сессия Telethon (добавьте в .gitignore)
-```
+---
 
 ### Требования
-- Python 3.9+ (рекомендуется 3.10/3.11)
-- Аккаунт Telegram + API-ключи с https://my.telegram.org/apps
-- Виртуальное окружение (рекомендуется)
+- Python **3.9+** (рекомендуется 3.10/3.11)
+- Аккаунт Telegram
+- API ID и API Hash с [my.telegram.org](https://my.telegram.org/apps)
+- Установленная библиотека **Telethon**
+
+---
 
 ### Установка
 ```bash
-# 1) Клонируйте репозиторий и зайдите в папку
-git clone <your-repo-url>.git
-cd <your-repo-folder>
+# 1) Клонируйте репозиторий и перейдите в него
+git clone https://github.com/<ваш-логин>/<ваш-репо>.git
+cd <ваш-репо>
 
 # 2) Создайте и активируйте виртуальное окружение
 python -m venv venv
@@ -162,13 +161,15 @@ venv\Scripts\activate
 pip install telethon
 ```
 
-### Конфигурация
-Создайте `config.json` в корне проекта:
+---
+
+### Настройка
+Создайте в папке проекта файл `config.json` и вставьте в него свои данные:
 
 ```jsonc
 {
   "api_id": 1234567,
-  "api_hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "api_hash": "xxxxxxxxxxxxxxxxxxxxxxxx",
   "session_name": "smena_checker",
   "trigger_word": "смена",
   "reply_text": "Привет! Это автоответ.",
@@ -176,44 +177,45 @@ pip install telethon
 }
 ```
 
-- `api_id`, `api_hash` — ваши API-данные Telegram (храните в секрете).
-- `session_name` — имя файла сессии Telethon.
-- `trigger_word` — слово/фраза-триггер (поиск без регистра).
-- `reply_text` — текст автоответа.
-- `target_chats` — список чатов для отслеживания; можно использовать `@username`, названия или ID.
+---
 
-### Запуск
+### Где взять `api_id` и `api_hash`
+1. Перейдите на [https://my.telegram.org](https://my.telegram.org).
+2. Авторизуйтесь по номеру телефона.
+3. Зайдите в **API development tools**.
+4. Создайте новое приложение.
+5. Скопируйте `api_id` и `api_hash` в `config.json`.
+
+---
+
+### Запуск бота
 ```bash
 python bot.py
 ```
-При первом запуске потребуется вход (код в Telegram). Сессия сохранится и будет использоваться повторно.
+- При первом запуске бот запросит ваш номер телефона и код из Telegram.
+- После входа создаст файл `.session` для повторного использования авторизации.
+
+---
 
 ### Advanced
-**Отправка сообщения в ЛС конкретному пользователю вместо ответа в чат:** замените блок ответа в `bot.py` на:
+Чтобы отправлять сообщение в личку, а не в чат:
 ```python
 await client.send_message(config["to_user_id"], config["reply_text"])
 ```
-и добавьте в `config.json` поле:
+Добавьте в `config.json`:
 ```json
 "to_user_id": 123456789
 ```
 
+---
+
 ### Безопасность
-- **Не коммитьте** `config.json`, файлы сессий (`*.session`) и виртуальное окружение.
+- **Не заливайте** настоящий `config.json` и `.session` в публичный репозиторий.
+- Берегите `api_id` и `api_hash` как пароли.
 - Добавьте `.gitignore`:
 ```
 venv/
 *.session*
-config.json
 __pycache__/
 *.pyc
 ```
-- Берегите `api_id`/`api_hash` как пароли.
-
-### Частые проблемы
-- **Триггер не срабатывает?** Проверьте слово, регистр, и что чат корректно указан в `target_chats`.
-- **Нет доступа к чату?** Аккаунт, под которым запущен юзербот, должен быть участником и иметь доступ к сообщениям.
-- **Проблемы с входом?** Удалите `*.session` и войдите заново; проверьте правильность номера и кода.
-
-### Лицензия
-MIT (или выберите свою).
